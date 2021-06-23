@@ -1,0 +1,1 @@
+[{"name":"Tihar","id":1,"occupancy":200},{"name":"Hajipur","id":2,"occupancy":100},{"name":"Tihar 2","occupancy":22000,"id":3},{"name":"Parul ","crime":"Kal bolker call he nahi ki","id":4,"prisonId":3,"prisonName":"Tihar 2"}]
