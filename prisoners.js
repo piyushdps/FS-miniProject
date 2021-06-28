@@ -4,6 +4,15 @@ const getDataFromFile = require('./getDataFromFile')
 const {DefaultPrisonsList,DefaultPrisonersList} = require('./defaultData')
 const fs = require("fs");
 const { json } = require('express');
+const { exit } = require('process');
+
+
+
+
+
+
+
+
 
 
 
@@ -33,7 +42,7 @@ router.get("/", async (req, res) => {
 }    
     
     
-    res.json({message:'No Id Found'}).status(404);
+    res.status(404).json({message:'No Id Found'});
     return
 
 
@@ -57,9 +66,9 @@ router.get("/", async (req, res) => {
       prisonId:req.body.prisonId
     };
 
-    const prisonData  = JSON.parse(fs.readFileSync("./files/prisons.txt", { encoding: "utf8", flag: "r" }));
 
 try {
+  const prisonData  = JSON.parse(fs.readFileSync("./files/prisons.txt", { encoding: "utf8", flag: "r" }));
   
   for(let i=0 ; i<prisonData.length ; i++){
     if (req.body.prisonId === prisonData[i].id){
@@ -67,12 +76,11 @@ try {
       listOfPrisoner.push(object1);
 
       fs.writeFileSync("./files/prisoners.txt", JSON.stringify(listOfPrisoner));
-    
-      res.json(JSON.stringify(listOfPrisoner));
+          res.json(JSON.stringify(listOfPrisoner));
       return;
     }
   }
-  res.status(401). json({message:'Cannot find a prison'});
+  res.status(401). json({message:'Cannot find a prison with the given ID'});
 return
 
   
@@ -97,30 +105,63 @@ return
   router.put("/:id", async (req, res) => {
     let { id } = req.params;
       id = parseInt(id);
-    let dataFromFile = getDataFromFile("./files/prisoners.txt", DefaultPrisonersList);
-    let listOfPrisoner = JSON.parse(dataFromFile);
-  let updated = false
-    for (let i = 0; i < listOfPrisoner.length; i++) {
-      if (listOfPrisoner[i].id === id) {
-        // Update
-        updated=true;
-        listOfPrisoner[i].crime =
-          req.body.crime || listOfPrisoner[i].crime;
-          listOfPrisoner[i].prisonId =
-          req.body.prisonId || listOfPrisoner[i].prisonId;
-        listOfPrisoner[i].name = req.body.name || listOfPrisoner[i].name;
-        fs.writeFileSync("./files/prisoners.txt", JSON.stringify(listOfPrisoner));
-        res.json(JSON.stringify(listOfPrisoner));
-        return
-      } else {
-       
-      }
+    
+    try{
+      let dataFromFile = getDataFromFile("./files/prisoners.txt", DefaultPrisonersList);
+      let listOfPrisoner = JSON.parse(dataFromFile);
+      const prisonData  = JSON.parse(fs.readFileSync("./files/prisons.txt", { encoding: "utf8", flag: "r" }));
+      let cont = false
+      let prisonerFound = false
 
-     
-    } if(updated === false){
-        res.json({ message: "No Data Found" }).status(404);
-        return
-      }
+      prisonData.forEach(element => {
+        if(parseInt(req.body.prisonId) === element.id){
+          cont = true;
+        }else{
+          
+        }})
+        if(cont){
+            listOfPrisoner.forEach((element,i) => {
+              if(parseInt(element.id) === parseInt(id)){
+                prisonerFound=true
+                listOfPrisoner[i].prisonId = req.body.prisonId
+                listOfPrisoner[i].name = req.body.name
+                listOfPrisoner[i].crime = req.body.crime
+
+                prisonData.forEach(element => {
+                  if(parseInt(req.body.prisonId) === element.id){
+                    listOfPrisoner[i].prisonName = element.name
+                  }
+                })
+                fs.writeFileSync("./files/prisoners.txt", JSON.stringify(listOfPrisoner));
+  
+                
+                res.json(JSON.stringify(listOfPrisoner));
+                return             }
+
+            });
+
+            if(!prisonerFound){
+              return res.status(401).json({message:'No Prisoner Found with the given id'})
+          
+            }
+        }
+        else{
+          return  res.status(401).json({message:'No Prison Found with the given id'})
+          
+        }
+
+    
+
+
+
+
+
+    }catch(error){
+      res.status(401).json({message:'Server error'})
+      return
+    }
+    
+
   });
   
   

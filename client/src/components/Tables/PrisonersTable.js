@@ -1,10 +1,11 @@
 import axios from 'axios'
 import ApiHandlerContext from 'context/ApiHandlerContext'
 import React, { useContext, useState } from 'react'
+import { useHistory } from "react-router-dom";
 import { Button, Card, CardBody, CardHeader, CardTitle, Col, Row, Table } from 'reactstrap'
 
 const PrisonersTable = () => {
-  const {getAllPrisoners,refresh ,setRefresh}  = useContext(ApiHandlerContext)
+  const {getAllPrisoners,refresh ,setRefresh,setPrisonerId}  = useContext(ApiHandlerContext)
 
 const [data,setData]=useState([{id:'',name:'', crime:''}])
 const [r,rr]=useState(false)
@@ -14,6 +15,7 @@ setData(await getAllPrisoners());
   }, [refresh])
 
 
+  const history = useHistory();
 
     return (
         <Row>
@@ -48,7 +50,17 @@ setData(await getAllPrisoners());
       await axios.delete(`/api/prisoners/${o.id}`);
       rr(!r);
       setRefresh(!refresh)
-    }} >Delete </Button></td>
+    }} >Delete </Button>
+    {' '}
+    <Button color="info" onClick = { async e=>{
+      setPrisonerId(o.id)
+ history.push('/admin/user-page');
+      rr(!r);
+      setRefresh(!refresh)
+    }} >Edit</Button>
+    
+    
+    </td>
   </tr>
   )
 })}

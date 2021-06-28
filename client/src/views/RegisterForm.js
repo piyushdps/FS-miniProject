@@ -1,4 +1,4 @@
-import React,{useContext,useState} from "react";
+import React,{useContext,useEffect,useState} from "react";
 import { Button } from "reactstrap";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import ApiHandlerContext from "context/ApiHandlerContext";
@@ -10,7 +10,7 @@ import ApiHandlerContext from "context/ApiHandlerContext";
   
 
   const handleValidSubmit = (event, values) => {
-    setState({ email: values.email });
+ 
     register({id:state.id , password:state.password ,name:state.name})
    
   };
@@ -20,7 +20,9 @@ import ApiHandlerContext from "context/ApiHandlerContext";
     console.log(`Login failed`);
   };
 
- 
+ useEffect(() => {
+   console.log(state)
+ }, [state])
     return (
       <AvForm
         onValidSubmit={handleValidSubmit}

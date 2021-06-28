@@ -1,1 +1,1 @@
-[{"name":"Tihar","id":1,"occupancy":200},{"name":"Hajipur","id":2,"occupancy":100},{"name":"Tihar 2","occupancy":22000,"id":3}]
+[{"name":"Tihar","id":1,"occupancy":200,"availableSpace":199},{"name":"Hajipur","id":2,"occupancy":100,"availableSpace":99}]

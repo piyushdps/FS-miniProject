@@ -1,1 +1,1 @@
-[{"id":"admin","name":"admin","password":"$2a$10$cvRyxT4Eu/.VG3kcu3y5reNtAqWLaj3tqpTg1cKkygMvUfARlyklC"},{"id":"saurabhKumar","password":"$2a$10$LlLx190iEgij6ROh5.t9vuEc4H6EWrXi0oumiDcS2ds8Dn7xIihV."}]
+[{"id":"admin","name":"admin","password":"$2a$10$cvRyxT4Eu/.VG3kcu3y5reNtAqWLaj3tqpTg1cKkygMvUfARlyklC"}]

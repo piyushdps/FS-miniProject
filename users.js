@@ -65,7 +65,7 @@ router.post("/register", async (req, res) => {
   data.push({ id, password: hashedPassword ,name});
   fs.writeFileSync("./files/userInfo.txt", JSON.stringify(data));
 
-  res.setHeader("Set-Cookie", ["token=encryptedstring; HttpOnly" , `userName=${data[i].id}`]).json({ message: "Signed up Succesfully", id, password: hashedPassword });
+  res.setHeader("Set-Cookie", ["token=encryptedstring; HttpOnly" , `userName=${data[i].id}` , `name=${name}`]).json({ message: "Signed up Succesfully", id, password: hashedPassword });
 
   } catch (error) {
     res.status(401).json({message: 'NOT WORKING FINE' })
@@ -94,8 +94,8 @@ try {
         let match = await bcrypt.compareSync(password, data[i].password);
       if (match) {
         res
-          .setHeader("Set-Cookie", ["token=encryptedstring; HttpOnly" , `userName=${data[i].id}`])
-          .json({ message: "Logged in" ,userName :id });
+          .setHeader("Set-Cookie", ["token=encryptedstring; HttpOnly" , `userName=${data[i].id}` ,`name=${data[i].name}`])
+          .json({ message: "Logged in" ,userName :data[i].id});
         return;
       } else {
         res.setHeader("Set-Cookie", ["token=; HttpOnly" , "userName="]).json({ message: "Wrong Password" });
@@ -121,7 +121,7 @@ router.get('/checkLogin' , async (req,res) => {
   let dataFromFile2 = getDataFromFile("./files/prisoners.txt", DefaultPrisonersList);
   
   let listOfPrisoners = JSON.parse(dataFromFile2);
-  let dataFromFile3 = getDataFromFile("./files/prisoners.txt", defaultList);
+  let dataFromFile3 = getDataFromFile("./files/userInfo.txt", defaultList);
   
   let listOfUsers = JSON.parse(dataFromFile3);
 
@@ -129,10 +129,13 @@ router.get('/checkLogin' , async (req,res) => {
 
   if (!req.cookies.token || req.cookies.token !== 'encryptedstring'  ) return res.status(401).json({message:'Please Login ' , status:false});
 else{
+  console.log(req.cookies);
+
   const dashboardData = {
     user:listOfUsers.length,
     prison:listOfPrisons.length,
-    prisoner:listOfPrisoners.length
+    prisoner:listOfPrisoners.length,
+    name: req.cookies.name || ' User '
 
   }
 return  res.status(200).json({message:'Logged in ✔️' , status:true , data:dashboardData });

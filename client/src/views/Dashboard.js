@@ -3,6 +3,8 @@ import ApiHandlerContext from "context/ApiHandlerContext";
 import React,{useContext} from "react";
 // react plugin used to create charts
 import { Line, Pie } from "react-chartjs-2";
+import TableList from "views/Tables.js";
+
 // reactstrap components
 import {
   Card,
@@ -17,7 +19,7 @@ import {
 
 function Dashboard() {
 
-  const { login  , totalPrisons , totalPrisoners, totalUsers} = useContext(ApiHandlerContext)
+  const { login  , totalPrisons , totalPrisoners, totalUsers,userKaNaam} = useContext(ApiHandlerContext)
 
 
 
@@ -25,6 +27,12 @@ function Dashboard() {
     <>
       <div className="content">
         <Row>
+        <h3>
+            Hi,{userKaNaam}
+          </h3>
+        </Row>
+        <Row>
+        
           <Col lg="4" md="6" sm="6">
             <Card className="card-stats">
               <CardBody>
@@ -46,7 +54,7 @@ function Dashboard() {
               <CardFooter>
                 <hr />
                 <div className="stats">
-                  <i className="fas fa-sync-alt" /> Updated Now
+                  <i className="fas fa-sync-alt" /> Total Prisons Available
                 </div>
               </CardFooter>
             </Card>
@@ -72,7 +80,7 @@ function Dashboard() {
               <CardFooter>
                 <hr />
                 <div className="stats">
-                  <i className="far fa-calendar" /> Last day
+                  <i className="fas fa-sync-alt"/> Total Number of Prisoners
                 </div>
               </CardFooter>
             </Card>
@@ -88,7 +96,7 @@ function Dashboard() {
                   </Col>
                   <Col md="8" xs="7">
                     <div className="numbers">
-                      <p className="card-category">Total Users</p>
+                      <p className="card-category">Users</p>
                       <CardTitle tag="p">{totalUsers}</CardTitle>
                       <p />
                     </div>
@@ -98,11 +106,16 @@ function Dashboard() {
               <CardFooter>
                 <hr />
                 <div className="stats">
-                  <i className="far fa-clock" /> In the last hour
+                  <i className="fas fa-sync-alt" /> Total Number of Users
                 </div>
               </CardFooter>
             </Card>
           </Col>
+       </Row>
+       <Row>
+       <Col lg="12" md="6" sm="6">
+         <TableList/>
+         </Col>
        </Row>
         
      </div>

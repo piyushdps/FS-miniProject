@@ -23,13 +23,14 @@ setData(await getAllPrisons());
                 <CardTitle tag="h4">Prisons Table</CardTitle>
               </CardHeader>
               <CardBody>
-                <Table responsive>
+                <Table responsive  hover >
                   <thead className="text-primary">
                     <tr>
                       <th>SERIAL NO</th>
                       <th>ID</th>
                       <th>Name</th>
                       <th>Occupancy</th>
+                      <th>Available Space</th>
 
                       {/* <th className="text-right"></th> */}
                     </tr>
@@ -41,6 +42,8 @@ setData(await getAllPrisons());
     <td>{`JAIL - ID USPL${o.id}`}</td>
     <td className="">{o.name}</td>
     <td className="">{o.occupancy}</td>
+    <td className="">{o?.availableSpace || o.occupancy}</td>
+
 
     <td className="text-right"  > <Button color="danger" onClick = { async e=>{
       await axios.delete(`/api/prisons/${o.id}`);
